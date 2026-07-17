@@ -1,0 +1,13 @@
+{
+  "name": "agentseo-clients",
+  "private": true,
+  "description": "Official open-source clients for AgentSEO.",
+  "workspaces": [
+    "packages/js-sdk",
+    "packages/mcp-server"
+  ],
+  "scripts": {
+    "build": "npm --workspace packages/js-sdk run build && npm --workspace packages/mcp-server run build"
+  },
+  "license": "MIT"
+}
