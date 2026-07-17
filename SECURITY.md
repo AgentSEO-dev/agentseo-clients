@@ -4,7 +4,7 @@ Please do not create public issues for vulnerabilities or leaked credentials.
 
 Report security concerns to:
 
-`daniel@joytecnologies.com`
+`daniel@joytechnologies.com`
 
 Include:
 
