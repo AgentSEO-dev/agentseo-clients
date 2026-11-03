@@ -70,7 +70,7 @@ For Cursor, add the same block in MCP settings:
 
 After restart, ask Claude or Cursor:
 
-`Run agentseo_local_audit for example.com in New York, NY`
+`Run agentseo_local_audit for Example Dental in Austin, Texas, United States`
 
 ## Environment Variables
 
@@ -86,19 +86,51 @@ After restart, ask Claude or Cursor:
 - `agentseo_extract`
 - `agentseo_analyze_serp`
 - `agentseo_local_audit`
-- `agentseo_local_audit_batch`
 - `agentseo_content_gap`
-- `agentseo_web_mentions` (preferred; alias: `agentseo_social_listen`)
+- `agentseo_opportunities_find`
+- `agentseo_opportunities_brief`
+- `agentseo_content_refresh_brief`
+- `agentseo_content_serp_outline`
+- `agentseo_content_brief`
+- `agentseo_content_draft_qa`
+- `agentseo_content_schema_plan`
+- `agentseo_content_internal_links`
+- `agentseo_content_title_meta`
+- `agentseo_content_keyword_map`
+- `agentseo_content_technical_qa`
+- `agentseo_content_action_plan`
+- `agentseo_site_sitemap_audit`
+- `agentseo_serp_volatility`
+- `agentseo_page_cro_qa`
+- `agentseo_ai_visibility_prompt_set`
+- `agentseo_content_programmatic_template`
+- `agentseo_content_cannibalization`
+- `agentseo_content_competitor_gap_matrix`
+- `agentseo_keyword_ideas_suggest`
+- `agentseo_keyword_metrics_overview`
+- `agentseo_domain_ranked_keywords`
+- `agentseo_domain_relevant_pages`
+- `agentseo_domain_competitors`
+- `agentseo_domain_intersection`
+- `agentseo_domain_traffic_estimate`
+- `agentseo_backlinks_summary`
+- `agentseo_backlinks_list`
+- `agentseo_backlinks_anchors`
+- `agentseo_backlinks_referring_domains`
+- `agentseo_backlinks_domain_pages`
+- `agentseo_backlinks_competitors`
+- `agentseo_backlinks_new_lost_timeseries`
+- `agentseo_backlinks_page_intersection`
+- `agentseo_backlinks_opportunity_finder`
+- `agentseo_page_intersection`
 - `agentseo_ai_overview_extract`
 - `agentseo_local_visibility_track`
-- `agentseo_llm_mentions_track`
-- `agentseo_content_decay_detect`
-- `agentseo_keyword_cluster_build`
 - `agentseo_rank_track`
-- `agentseo_rank_history`
 - `agentseo_job_status`
 
 `agentseo_ai_overview_extract` also accepts an optional `target_domain` when you want Claude or another MCP client to check whether your site appears in the sampled candidate set for an AI Overview query.
+
+`agentseo_content_internal_links` requires `target_pages`; pass 1-50 candidate internal pages from your sitemap, CMS, crawler, Search Console, or `agentseo_site_sitemap_audit`.
 
 ## Local Run (Without Claude)
 

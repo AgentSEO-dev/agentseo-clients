@@ -1,0 +1,73 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "dev.agentseo.www/agentseo-mcp",
+  "title": "AgentSEO",
+  "description": "Live SEO workflow tools for Claude Code, Codex, and AI agents.",
+  "version": "0.1.4",
+  "repository": {
+    "url": "https://github.com/AgentSEO-dev/agentseo-clients",
+    "source": "github"
+  },
+  "websiteUrl": "https://www.agentseo.dev",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://www.agentseo.dev/mcp",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "description": "Your AgentSEO server-side API key. Create one at https://www.agentseo.dev.",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "x-project-id",
+          "description": "Optional project attribution for client, tenant, or workspace tracking.",
+          "isRequired": false
+        },
+        {
+          "name": "x-workflow-id",
+          "description": "Optional workflow attribution for scheduled jobs, agents, or automations.",
+          "isRequired": false
+        }
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@agentseo/mcp-server",
+      "version": "0.1.4",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AGENTSEO_API_KEY",
+          "description": "Your AgentSEO server-side API key.",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "AGENTSEO_API_URL",
+          "description": "Optional API base URL. Defaults to https://www.agentseo.dev/api/v1.",
+          "isRequired": false,
+          "format": "string"
+        },
+        {
+          "name": "AGENTSEO_PROJECT_ID",
+          "description": "Optional project attribution for usage and job tracking.",
+          "isRequired": false,
+          "format": "string"
+        },
+        {
+          "name": "AGENTSEO_WORKFLOW_ID",
+          "description": "Optional workflow attribution for usage and job tracking.",
+          "isRequired": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
