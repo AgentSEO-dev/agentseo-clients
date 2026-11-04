@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -85,6 +85,8 @@ test("stdio initialization and tools/list work with dummy credentials and all ne
   try {
     await client.connect(transport, { timeout: 5000 });
     assert.ok(client.getServerVersion()?.name);
+    const manifest = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+    assert.equal(client.getServerVersion().version, manifest.version, "stdio must advertise the packaged release version");
     assertMetadataContract((await client.listTools({}, { timeout: 5000 })).tools);
     const result = await client.callTool({ name: "agentseo_local_audit", arguments: { business_name: 42, location: "Austin" } });
     assert.equal(result.isError, true, "invalid input must be rejected before the API");

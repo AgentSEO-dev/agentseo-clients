@@ -3,7 +3,7 @@
   "name": "dev.agentseo.www/agentseo-mcp",
   "title": "AgentSEO",
   "description": "Live SEO workflow tools for Claude Code, Codex, and AI agents.",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "repository": {
     "url": "https://github.com/AgentSEO-dev/agentseo-clients",
     "source": "github"
@@ -37,7 +37,7 @@
     {
       "registryType": "npm",
       "identifier": "@agentseo/mcp-server",
-      "version": "0.1.4",
+      "version": "0.1.5",
       "transport": {
         "type": "stdio"
       },

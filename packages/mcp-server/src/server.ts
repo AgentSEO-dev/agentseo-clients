@@ -137,7 +137,7 @@ export function createAgentSeoMcpServer({
 }: AgentSeoMcpServerOptions) {
   const server = new McpServer({
     name: "AgentSEO Hosted MCP",
-    version: "0.1.4",
+    version: "0.1.5",
     websiteUrl: "https://www.agentseo.dev",
   });
 
