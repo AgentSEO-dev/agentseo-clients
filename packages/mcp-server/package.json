@@ -1,7 +1,7 @@
 {
     "name": "@agentseo/mcp-server",
     "mcpName": "dev.agentseo.www/agentseo-mcp",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "type": "module",
     "license": "MIT",
     "bin": {
@@ -14,7 +14,7 @@
     },
     "scripts": {
         "build": "tsc",
-        "test": "npm run build && node --test contract-check.mjs",
+        "test": "npm run build && node --test contract-check.mjs test/metadata.test.mjs",
         "start": "node dist/index.js",
         "dev": "tsc --watch"
     },
