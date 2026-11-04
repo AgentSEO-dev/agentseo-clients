@@ -82,6 +82,56 @@ After restart, ask Claude or Cursor:
 
 ## Available Tools
 
+### Safety and input metadata
+
+All 45 tools declare explicit MCP `readOnlyHint`, `destructiveHint`,
+`idempotentHint` and `openWorldHint` values. These are behavior hints, not access
+controls or permission to spend credits.
+
+- The 44 analysis tools consume existing AgentSEO credits and may create durable
+  jobs or other charged work, including workflows that only transform supplied
+  data. They are **not read-only**. Credit consumption is flagged as destructive.
+  The client does not send an idempotency key, so repeating a call can create
+  another charge; these tools declare `idempotentHint: false`.
+- `agentseo_job_status` can resume pending work, so it is also **not read-only**.
+  It polls the same job without an additional debit and declares
+  `destructiveHint: false` and `idempotentHint: true`.
+- `openWorldHint: false` is limited to these supplied-data-only workflows:
+  `agentseo_content_keyword_map`, `agentseo_content_action_plan`,
+  `agentseo_serp_volatility`, `agentseo_ai_visibility_prompt_set`,
+  `agentseo_content_programmatic_template`, `agentseo_content_cannibalization`,
+  `agentseo_content_competitor_gap_matrix` and
+  `agentseo_backlinks_opportunity_finder`. They still call AgentSEO and consume
+  credits. The other tools can query or fetch external data, including when
+  pending work is resumed by job polling.
+
+`tools/list` documents every input property, including nested page, crawl,
+snapshot, prospect and sample-record fields. Descriptions state purpose, formats,
+units, accepted enum values, bounds and client defaults where applicable.
+For example, weekly planning capacity is measured in effort points, result
+offsets are zero-based row offsets, and a synchronous request can still return a
+pending job. Poll its returned job ID instead of repeating the charged analysis.
+
+### Provider-free contract checks
+
+From this package directory, run:
+
+```bash
+npm ci --workspaces=false
+npm test --workspaces=false
+```
+
+The tests build the package, verify all 45 tools' metadata recursively and compare
+validation rules/defaults with a pre-metadata schema fixture. They also initialize
+the real stdio entry point and call `tools/list` using only dummy credentials, an
+empty working directory and a preload that blocks network access. Invalid-input
+rejection is checked without executing any live analysis or provider request.
+
+These checks cover the npm client, independently of the hosted `/mcp` and
+`/mcp/oauth` endpoints. A local build does not publish a new npm version.
+
+### Tool catalog
+
 - `agentseo_search`
 - `agentseo_extract`
 - `agentseo_analyze_serp`
