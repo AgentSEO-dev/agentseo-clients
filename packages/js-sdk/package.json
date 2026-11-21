@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "test": "npm run build && node --test test/retry-check.mjs",
     "dev": "tsc --watch",
     "prepare": "npm run build"
   },

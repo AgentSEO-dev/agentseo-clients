@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 from typing import Any, Dict, Optional
+from uuid import uuid4
 
 import requests
 from requests import Response
@@ -79,8 +80,9 @@ class AgentSEOClient:
         }
         if method == "POST":
             headers["Content-Type"] = "application/json"
-        if idempotency_key:
-            headers["idempotency-key"] = idempotency_key
+            # One identity per logical POST, created before the retry loop.
+            # Preserve explicit values (even empty ones) for server validation.
+            headers["idempotency-key"] = idempotency_key if idempotency_key is not None else str(uuid4())
         resolved_project_id = project_id if project_id is not None else self.project_id
         resolved_workflow_id = workflow_id if workflow_id is not None else self.workflow_id
         if resolved_project_id:

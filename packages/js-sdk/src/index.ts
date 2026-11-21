@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 export type RequestOptions = {
   sync?: boolean;
   idempotencyKey?: string;
@@ -171,6 +173,10 @@ export class AgentSEO {
     }
 
     const maxRetries = Math.max(0, options?.maxRetries ?? this.maxRetries);
+    // One identity per logical mutating call, generated BEFORE the retry loop.
+    // Preserve caller-supplied keys exactly, including invalid values for the
+    // server to reject; never mint a fresh charge identity on a network retry.
+    const idempotencyKey = method === "POST" ? options?.idempotencyKey ?? randomUUID() : undefined;
 
     for (let attempt = 0; ; attempt += 1) {
       const controller = new AbortController();
@@ -183,8 +189,8 @@ export class AgentSEO {
             "x-api-key": this.apiKey,
             "x-agentseo-client": "js-sdk",
             ...(method === "POST" ? { "content-type": "application/json" } : {}),
-            ...(options?.idempotencyKey
-              ? { "idempotency-key": options.idempotencyKey }
+            ...(idempotencyKey !== undefined
+              ? { "idempotency-key": idempotencyKey }
               : {}),
             ...(options?.projectId || this.projectId
               ? { "x-project-id": options?.projectId ?? this.projectId ?? "" }
