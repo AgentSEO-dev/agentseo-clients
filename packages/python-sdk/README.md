@@ -27,9 +27,13 @@ client = AgentSEOClient(
     workflow_id="nightly-refresh",
 )
 
-result = client.local_audit("example.com", "New York, NY", sync=True)
+result = client.local_audit("Example Dental", "New York, NY", sync=True)
 print(result)
 ```
+
+Local audits require the business name, not a website domain or URL. The SDK’s
+legacy argument is named `domain`; pass a business name in it. REST callers use
+`business_name`.
 
 ## Async Jobs
 
