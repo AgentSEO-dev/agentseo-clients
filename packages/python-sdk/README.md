@@ -4,8 +4,15 @@ Official Python SDK for AgentSEO.
 
 ## Install
 
+Use an activated Python 3.9+ virtual environment and install from the official
+source repository. The import check makes no API requests. For setup without an
+SDK, use the [REST quickstart](https://www.agentseo.dev/docs/quickstart).
+
 ```bash
-pip install agentseo-sdk
+git clone https://github.com/AgentSEO-dev/agentseo-clients.git
+cd agentseo-clients
+python -m pip install ./packages/python-sdk
+python -c "from agentseo_sdk import AgentSEOClient; print('AgentSEOClient import OK')"
 ```
 
 ## Quick Start
@@ -34,8 +41,15 @@ job = client.content_gap(
     keyword="best project management software"
 )
 
-result = client.get_job(job["jobId"])
+print("Job:", job["jobId"])
+completed = client.wait_for_job(job["jobId"], timeout_seconds=60)
+if completed["status"] == "failed":
+    raise RuntimeError(completed.get("error"))
+print(completed["result"])
 ```
+
+If polling times out, keep the printed job ID and resume with `get_job` or
+`wait_for_job`; do not submit the work again.
 
 Set `project_id` and `workflow_id` once on the client when you want usage, jobs, and budgets grouped by agent workflow. You can also override them when polling:
 

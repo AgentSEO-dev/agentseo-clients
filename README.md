@@ -35,8 +35,15 @@ console.log(result);
 
 Use the Python SDK:
 
+Use an activated Python 3.9+ virtual environment and install from the official
+source repository. The import check makes no API requests. For setup without an
+SDK, use the [REST quickstart](https://www.agentseo.dev/docs/quickstart).
+
 ```bash
-pip install agentseo-sdk
+git clone https://github.com/AgentSEO-dev/agentseo-clients.git
+cd agentseo-clients
+python -m pip install ./packages/python-sdk
+python -c "from agentseo_sdk import AgentSEOClient; print('AgentSEOClient import OK')"
 ```
 
 ```python
