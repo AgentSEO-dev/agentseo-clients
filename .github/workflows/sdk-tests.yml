@@ -27,6 +27,11 @@ jobs:
       - name: Retry identity tests (built artifact, mocked HTTP)
         run: npm test --prefix packages/js-sdk
 
+      - name: Published SDK documentation (registry artifact, mocked HTTP)
+        run: |
+          npm ci --ignore-scripts --prefix tests/fixtures/published-clients
+          node scripts/tests/published-docs.mjs
+
   python-sdk:
     name: Python SDK (${{ matrix.python-version }})
     runs-on: ubuntu-24.04

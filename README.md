@@ -15,22 +15,46 @@ The hosted AgentSEO API, worker system, provider orchestration, billing, and tra
 Use the JavaScript SDK:
 
 ```bash
-npm install @agentseo/sdk
+npm install @agentseo/sdk@0.1.1
 ```
 
-```ts
+```js
 import { AgentSEO } from "@agentseo/sdk";
 
-const client = new AgentSEO({
-  apiKey: process.env.AGENTSEO_API_KEY!,
+const apiKey = process.env.AGENTSEO_API_KEY;
+if (!apiKey) throw new Error("Set AGENTSEO_API_KEY");
+const client = new AgentSEO({ apiKey, timeoutMs: 10_000 });
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+async function pollExistingJob(jobId) {
+  const deadline = Date.now() + 90_000;
+  while (Date.now() < deadline) {
+    const status = await client.getJob(jobId);
+    if (status.status === "completed") {
+      if (status.result == null) throw new Error("Completed job has no result");
+      return status;
+    }
+    if (status.status === "failed") {
+      throw new Error(status.error?.message || "Job failed");
+    }
+    if (!["queued", "pending", "processing", "retrying"].includes(status.status)) {
+      throw new Error("Unexpected job status: " + status.status);
+    }
+    await sleep(Math.min(2_000, Math.max(0, deadline - Date.now())));
+  }
+  throw new Error("Polling deadline reached. Resume job " + jobId + "; do not resubmit.");
+}
+
+// Submit once. Polling does not submit another billable request.
+const job = await client.search({
+  "query": "seo api",
+  "location": "United States",
+  "limit": 5
 });
-
-const result = await client.search(
-  { query: "seo api", location: "United States", limit: 5 },
-  { sync: true },
-);
-
-console.log(result);
+if (typeof job.jobId !== "string" || !job.jobId) throw new Error("Missing job ID");
+console.error("Job:", job.jobId);
+const status = await pollExistingJob(job.jobId);
+console.log(JSON.stringify(status.result, null, 2));
 ```
 
 Use the Python SDK:
