@@ -27,13 +27,18 @@ client = AgentSEOClient(
     workflow_id="nightly-refresh",
 )
 
-result = client.local_audit("Example Dental", "New York, NY", sync=True)
-print(result)
+job = client.local_audit("Example Dental", "New York, NY")
+job_id = job["jobId"]
+print("Job:", job_id, flush=True)
+completed = client.wait_for_job(job_id, timeout_seconds=90)
+if completed["status"] == "failed":
+    raise RuntimeError(completed.get("error") or "Job failed")
+print(completed["result"])
 ```
 
 Local audits require the business name, not a website domain or URL. The SDK’s
 legacy argument is named `domain`; pass a business name in it. REST callers use
-`business_name`.
+`business_name`. If polling stops, resume with the printed job ID.
 
 ## Async Jobs
 

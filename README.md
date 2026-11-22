@@ -74,9 +74,16 @@ python -c "from agentseo_sdk import AgentSEOClient; print('AgentSEOClient import
 from agentseo_sdk import AgentSEOClient
 
 client = AgentSEOClient(api_key="sk_live_...")
-result = client.search(query="seo api", sync=True)
-print(result)
+job = client.search(query="seo api")
+job_id = job["jobId"]
+print("Job:", job_id, flush=True)
+completed = client.wait_for_job(job_id, timeout_seconds=90)
+if completed["status"] == "failed":
+    raise RuntimeError(completed.get("error") or "Job failed")
+print(completed["result"])
 ```
+
+If polling stops, resume with the printed job ID.
 
 Use the MCP server:
 
